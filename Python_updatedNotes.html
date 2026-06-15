@@ -1,0 +1,592 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Python Notes — BCA IV Sem</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:15px}
+body{font-family:'Segoe UI',Tahoma,sans-serif;background:#f0f2f5;color:#1e1e1e;line-height:1.72;min-height:100vh}
+/* SIDEBAR */
+.sidebar{position:fixed;top:0;left:0;width:270px;height:100vh;background:linear-gradient(180deg,#1a1a2e,#16213e);color:#ccc;overflow-y:auto;padding:18px 12px;z-index:100;border-right:3px solid #0f3460;transition:transform .3s ease}
+.sidebar.hidden{transform:translateX(-100%)}
+.sidebar::-webkit-scrollbar{width:5px}
+.sidebar::-webkit-scrollbar-thumb{background:#0f3460;border-radius:4px}
+.sidebar h2{color:#e94560;font-size:1.1rem;margin-bottom:12px;text-align:center;border-bottom:1px solid #444;padding-bottom:8px}
+.sidebar .unit-label{display:block;padding:7px 8px;margin:6px 0 2px;background:#0f3460;color:#e94560;border-radius:6px;font-weight:700;font-size:.82rem}
+.sidebar .unit-label.locked{opacity:.4}
+.sidebar a{display:block;color:#b0c4de;text-decoration:none;padding:3px 8px 3px 20px;font-size:.79rem;border-radius:4px;transition:.2s}
+.sidebar a:hover{background:rgba(233,69,96,.15);color:#fff}
+.sidebar .plink{color:#ffd369;font-weight:600}
+/* TOGGLE BTN */
+.toggle-btn{position:fixed;top:10px;left:282px;z-index:200;background:#0f3460;color:#fff;border:none;border-radius:8px;width:38px;height:38px;font-size:1.3rem;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.2);transition:left .3s ease}
+.toggle-btn.moved{left:10px}
+/* MAIN */
+.main{margin-left:270px;padding:28px 36px 50px;max-width:960px;transition:margin-left .3s ease}
+.main.full{margin-left:0}
+/* HEADINGS */
+h1.page-title{font-size:1.8rem;color:#0f3460;border-bottom:3px solid #e94560;padding-bottom:8px;margin-bottom:22px}
+h2.sec{font-size:1.3rem;color:#e94560;margin:26px 0 10px;padding-left:10px;border-left:4px solid #0f3460}
+h3.sub{font-size:1.05rem;color:#16213e;margin:14px 0 6px;padding-left:8px;border-left:3px solid #ffd369}
+/* UNIT TOGGLE */
+.unit-btn{display:flex;align-items:center;gap:10px;width:100%;padding:12px 16px;margin:16px 0 0;background:linear-gradient(135deg,#0f3460,#16213e);color:#fff;border:none;border-radius:10px;font-size:1.12rem;font-weight:700;cursor:pointer;text-align:left;box-shadow:0 3px 10px rgba(0,0,0,.15);transition:.2s}
+.unit-btn:hover{opacity:.9}
+.unit-btn .arrow{transition:transform .3s;font-size:.85rem}
+.unit-btn.collapsed .arrow{transform:rotate(-90deg)}
+.unit-body{display:block;padding-top:8px}
+.unit-body.collapsed{display:none}
+/* CARDS */
+.card{background:#fff;border-radius:10px;padding:16px 20px;margin-bottom:14px;box-shadow:0 2px 8px rgba(0,0,0,.06);border-left:4px solid #0f3460}
+.card.warn{border-left-color:#e94560;background:#fff8f0}
+.card.green{border-left-color:#27ae60}
+/* LISTS */
+ul.nl{padding-left:18px;margin:5px 0}ul.nl li{margin-bottom:4px}ul.nl li::marker{color:#e94560}
+ol.nl{padding-left:18px;margin:5px 0}ol.nl li{margin-bottom:4px}
+/* CODE */
+pre{background:#1e1e2f;color:#a9dc76;padding:12px 16px;border-radius:8px;overflow-x:auto;font-size:.85rem;margin:8px 0;line-height:1.55;font-family:'Cascadia Code','Fira Code',Consolas,monospace;white-space:pre-wrap;word-wrap:break-word}
+code.c{background:#eef;color:#c7254e;padding:1px 5px;border-radius:4px;font-size:.87em;font-family:'Cascadia Code',Consolas,monospace}
+/* TABLES */
+table{width:100%;border-collapse:collapse;margin:8px 0 12px;font-size:.89rem}
+th{background:#0f3460;color:#fff;padding:8px 10px;text-align:left}
+td{padding:7px 10px;border-bottom:1px solid #ddd}
+tr:nth-child(even){background:#f7f9fc}
+/* TIPS */
+.tip{background:#fff3e0;border-left:4px solid #e94560;padding:8px 12px;border-radius:6px;margin:6px 0;font-size:.87rem}
+.real{background:#e8f5e9;border-left:4px solid #27ae60;padding:8px 12px;border-radius:6px;margin:6px 0;font-size:.87rem}
+/* PRACTICE */
+.practice{background:linear-gradient(135deg,#fff8e1,#fff3e0);border-radius:12px;padding:20px;margin-top:30px;border:2px solid #ffd369}
+.practice h2{color:#e94560;border-left:4px solid #ffd369;padding-left:10px;margin-bottom:8px;font-size:1.2rem}
+.tag{display:inline-block;padding:3px 11px;border-radius:14px;font-size:.75rem;font-weight:700;margin:10px 0 5px;color:#fff}
+.tag-m{background:#6c5ce7}.tag-f{background:#00b894}.tag-s{background:#0984e3}.tag-l{background:#d63031}
+.qb{margin:8px 0}
+.qb .q{font-weight:600;color:#1e1e1e;font-size:.92rem}
+.qb .q .qn{color:#e94560}
+.qb .op{padding-left:20px;margin:2px 0;font-size:.87rem}
+details.ans{margin:3px 0 10px}
+details.ans summary{cursor:pointer;color:#0f3460;font-weight:600;font-size:.83rem;padding:4px 9px;background:#e8f0fe;border-radius:6px;list-style:none;user-select:none}
+details.ans summary::-webkit-details-marker{display:none}
+details.ans .ab{padding:8px 12px;background:#fff;border-radius:0 0 8px 8px;border:1px solid #d0d7de;border-top:none;margin-top:-2px;font-size:.87rem;line-height:1.65}
+.divider{border:none;border-top:2px dashed #ccc;margin:25px 0}
+@media(max-width:800px){.sidebar{width:230px}.main{margin-left:230px;padding:16px}.toggle-btn{left:242px}}
+@media print{.sidebar,.toggle-btn{display:none !important}.main{margin-left:0 !important}}
+</style></head><body>
+
+<button class="toggle-btn" id="toggleBtn" onclick="toggleSidebar()">&#9776;</button>
+
+<script>
+function toggleSidebar(){
+  document.getElementById('sidebar').classList.toggle('hidden');
+  document.getElementById('mainContent').classList.toggle('full');
+  document.getElementById('toggleBtn').classList.toggle('moved');
+}
+function toggleUnit(id){
+  document.getElementById(id+'-body').classList.toggle('collapsed');
+  document.getElementById(id+'-btn').classList.toggle('collapsed');
+}
+</script>
+
+<nav class="sidebar" id="sidebar">
+<h2>&#128218; Python BCA IV Sem</h2>
+<span class="unit-label">UNIT 1 — Intro &amp; Core</span>
+<a href="#u1-intro">Introduction &amp; Features</a><a href="#u1-stdlib">Std Library &amp; Extensions</a><a href="#u1-impl">Implementation &amp; Install</a><a href="#u1-interpreter">Interpreter</a><a href="#u1-lexical">Lexical Structure</a><a href="#u1-datatypes">Data Types</a><a href="#u1-vars">Variables &amp; Expressions</a><a href="#u1-ops">All Operators</a><a href="#u1-print">print Statement</a><a href="#u1-cond">Conditionals &amp; Loops</a><a href="#u1-practice" class="plink">&#128221; Practice — Unit 1</a>
+<span class="unit-label">UNIT 2 — Functions, Lists, Modules</span>
+<a href="#u2-lists">Lists</a><a href="#u2-tuples">Tuples &amp; Comparison</a><a href="#u2-dicts">Dictionaries</a><a href="#u2-func">Functions &amp; Types</a><a href="#u2-args">Arguments (*args, **kwargs)</a><a href="#u2-lambda">Lambda Functions</a><a href="#u2-modules">Modules &amp; Packages</a><a href="#u2-practice" class="plink">&#128221; Practice — Unit 2</a>
+<span class="unit-label">UNIT 3 — OOPs, Exceptions, Files</span>
+<a href="#u3-oop">Classes &amp; Objects</a><a href="#u3-inherit">Inheritance &amp; Polymorphism</a><a href="#u3-hiding">Data Hiding</a><a href="#u3-except">Exception Handling</a><a href="#u3-modules">sys, copy, bisect</a><a href="#u3-regex">Regular Expressions</a><a href="#u3-fileio">File I/O</a><a href="#u3-os">OS &amp; Auxiliary Modules</a><a href="#u3-collections">UserList/Dict/String</a><a href="#u3-practice" class="plink">&#128221; Practice — Unit 3</a>
+<span class="unit-label locked">UNIT 4 — CGI, DB, Threads</span><a href="#u4" style="opacity:.4">Coming soon...</a>
+<span class="unit-label locked">UNIT 5 — Networking</span><a href="#u5" style="opacity:.4">Coming soon...</a>
+</nav>
+<div class="main" id="mainContent">
+
+<button class="unit-btn" id="u1-btn" onclick="toggleUnit('u1')"><span class="arrow">&#9660;</span> UNIT 1 — Python Introduction &amp; Core Language</button>
+<div class="unit-body" id="u1-body">
+
+<h2 class="sec" id="u1-intro">1.1 Introduction &amp; Features</h2>
+<div class="card"><ul class="nl">
+<li>Python: <strong>high-level, interpreted, general-purpose</strong> language by <strong>Guido van Rossum (1991)</strong>.</li>
+<li>Supports <strong>OOP + Functional + Procedural</strong> paradigms.</li>
+<li>Used in: Web Dev, Data Science, AI/ML, Automation.</li>
+</ul></div>
+<div class="card"><table>
+<tr><th>Feature</th><th>Note</th></tr>
+<tr><td>Simple &amp; Easy</td><td>Clean syntax, close to English</td></tr>
+<tr><td>Interpreted</td><td>Line-by-line; no compilation step</td></tr>
+<tr><td>Platform Independent</td><td>"Write Once, Run Anywhere"</td></tr>
+<tr><td>Dynamic Typing</td><td>No explicit type declaration</td></tr>
+<tr><td>Large Library</td><td>1,40,000+ packages</td></tr>
+<tr><td>Free &amp; Open Source</td><td>Strong community</td></tr>
+</table></div>
+<div class="card warn"><strong>Disadvantages:</strong> Slower than C/Java (interpreted), not ideal for mobile dev, higher memory usage.</div>
+
+<h2 class="sec" id="u1-stdlib">1.2 Standard Library &amp; Extension Modules</h2>
+<div class="card"><table>
+<tr><th>Aspect</th><th>Standard Library</th><th>Extension Modules</th></tr>
+<tr><td>Installation</td><td>Pre-installed</td><td>Via <code class="c">pip install</code></td></tr>
+<tr><td>Examples</td><td>math, os, sys, datetime, random</td><td>NumPy, Pandas, Django, Flask</td></tr>
+<tr><td>Usage</td><td>Basic tasks</td><td>Advanced (ML, Web, etc.)</td></tr>
+</table></div>
+
+<h2 class="sec" id="u1-impl">1.3 Implementation &amp; Installation</h2>
+<div class="card"><p><strong>How Python Works:</strong> Source (.py) &rarr; Bytecode (.pyc in __pycache__) &rarr; PVM executes line by line</p>
+<table><tr><th>Impl</th><th>Written In</th><th>Key Point</th></tr>
+<tr><td><strong>CPython</strong></td><td>C</td><td>Default from python.org</td></tr>
+<tr><td><strong>Jython</strong></td><td>Java</td><td>Runs on JVM</td></tr>
+<tr><td><strong>IronPython</strong></td><td>C#</td><td>Runs on .NET CLR</td></tr>
+<tr><td><strong>PyPy</strong></td><td>RPython</td><td>JIT compiler &rarr; faster</td></tr>
+</table>
+<p><strong>Binary Install:</strong> Easy, pre-compiled (.exe/.pkg). <strong>Source Install:</strong> Manual compilation, customizable.</p></div>
+
+<h2 class="sec" id="u1-interpreter">1.4 The Python Interpreter</h2>
+<div class="card"><table><tr><th>Aspect</th><th>Interactive Mode</th><th>Script Mode</th></tr>
+<tr><td>Execution</td><td>One command at a time</td><td>Entire .py file at once</td></tr>
+<tr><td>Use</td><td>Testing &amp; learning</td><td>Real applications</td></tr>
+</table></div>
+
+<h2 class="sec" id="u1-lexical">1.5 Lexical Structure &amp; Tokens</h2>
+<div class="card"><table><tr><th>Token</th><th>Description</th><th>Examples</th></tr>
+<tr><td>Keywords</td><td>Reserved words</td><td><code class="c">if, else, for, while, class, def</code></td></tr>
+<tr><td>Identifiers</td><td>Variable/function names</td><td><code class="c">total_marks, _count</code></td></tr>
+<tr><td>Literals</td><td>Fixed values</td><td><code class="c">10, "Python", True, None</code></td></tr>
+<tr><td>Operators</td><td>Perform operations</td><td><code class="c">+, -, ==, and</code></td></tr>
+<tr><td>Delimiters</td><td>Separate elements</td><td><code class="c">(), {}, [], :, ,</code></td></tr>
+</table>
+<p><strong>Rules:</strong> Identifiers start with letter/_; no digits first; case-sensitive. <strong>Indentation is mandatory.</strong> Comments: <code class="c">#</code> single-line; <code class="c">''' '''</code> multi-line.</p></div>
+
+<h2 class="sec" id="u1-datatypes">1.6 Data Types</h2>
+<div class="card"><table><tr><th>Category</th><th>Type</th><th>Example</th><th>Mutable?</th></tr>
+<tr><td rowspan="3">Numeric</td><td>int</td><td><code class="c">25</code></td><td>No</td></tr>
+<tr><td>float</td><td><code class="c">3.14</code></td><td>No</td></tr>
+<tr><td>complex</td><td><code class="c">2+3j</code></td><td>No</td></tr>
+<tr><td rowspan="3">Sequence</td><td>str</td><td><code class="c">"Python"</code></td><td>No</td></tr>
+<tr><td>list</td><td><code class="c">[1,2,3]</code></td><td>Yes</td></tr>
+<tr><td>tuple</td><td><code class="c">(1,2,3)</code></td><td>No</td></tr>
+<tr><td>Set</td><td>set</td><td><code class="c">{1,2,3}</code></td><td>Yes</td></tr>
+<tr><td>Mapping</td><td>dict</td><td><code class="c">{"k":"v"}</code></td><td>Yes</td></tr>
+<tr><td>Boolean</td><td>bool</td><td><code class="c">True/False</code></td><td>No</td></tr>
+<tr><td>None</td><td>NoneType</td><td><code class="c">None</code></td><td>No</td></tr>
+</table></div>
+<div class="tip"><strong>Exam Tip:</strong> Mutable = list, dict, set. Immutable = everything else.</div>
+
+<h2 class="sec" id="u1-vars">1.7 Variables &amp; Expressions</h2>
+<div class="card"><p>Variable = name for a memory location. Created on assignment (dynamic typing). <strong>Rules:</strong> Start with letter/_; no digits first; no keywords; case-sensitive.</p></div>
+<pre>a, b, c = 10, 20, 30   # Multiple assignment
+x = y = z = 5           # Same value to multiple
+del x                   # Delete variable</pre>
+
+<h2 class="sec" id="u1-ops">1.8 All Operators</h2>
+<div class="card"><table><tr><th>Category</th><th>Operators</th><th>Key Point</th></tr>
+<tr><td>Arithmetic</td><td><code class="c">+ - * / % ** //</code></td><td><code class="c">//</code>=floor div, <code class="c">**</code>=power</td></tr>
+<tr><td>Relational</td><td><code class="c">== != &gt; &lt; &gt;= &lt;=</code></td><td>Returns True/False</td></tr>
+<tr><td>Logical</td><td><code class="c">and, or, not</code></td><td>Combine conditions</td></tr>
+<tr><td>Assignment</td><td><code class="c">= += -= *= /=</code></td><td>Assign &amp; update</td></tr>
+<tr><td>Bitwise</td><td><code class="c">&amp; | ^ ~ &lt;&lt; &gt;&gt;</code></td><td>Binary operations</td></tr>
+<tr><td>Membership</td><td><code class="c">in, not in</code></td><td>Test value in sequence</td></tr>
+<tr><td>Identity</td><td><code class="c">is, is not</code></td><td>Same memory object?</td></tr>
+</table></div>
+<div class="tip"><strong>Exam Tip:</strong> <code class="c">==</code> = value equality. <code class="c">is</code> = identity (same memory).</div>
+<pre># Numeric operations
+abs(-7)         # 7
+pow(2,3)        # 8
+round(3.678,2)  # 3.68
+import math
+math.sqrt(16)   # 4.0
+math.floor(3.9) # 3
+math.ceil(3.1)  # 4
+int(3.9)        # 3 (truncates, NOT rounds)</pre>
+
+<h2 class="sec" id="u1-print">1.9 The print() Statement</h2>
+<div class="card"><p><code class="c">print(obj1, obj2, sep=' ', end='\n')</code></p></div>
+<pre>print("A","B","C", sep="-")          # A-B-C
+print("Hi", end="***"); print("World") # Hi***World
+print(f"Name: {'Parth'}, Age: {22}")   # f-string</pre>
+
+<h2 class="sec" id="u1-cond">1.10 Conditionals, Loops &amp; Control Flow</h2>
+<div class="card"><table><tr><th>Conditional</th><th>Use</th></tr>
+<tr><td><code class="c">if</code></td><td>Execute if True</td></tr>
+<tr><td><code class="c">if-else</code></td><td>Two paths</td></tr>
+<tr><td><code class="c">if-elif-else</code></td><td>Multiple conditions</td></tr>
+<tr><td>Ternary</td><td><code class="c">val_if_true if cond else val_if_false</code></td></tr>
+</table>
+<table><tr><th>Loop</th><th>When</th></tr>
+<tr><td><code class="c">for</code></td><td>Known iterations: <code class="c">for i in range(5)</code></td></tr>
+<tr><td><code class="c">while</code></td><td>Unknown iterations</td></tr>
+</table>
+<p><code class="c">range(start, stop, step)</code>. Loop <code class="c">else</code> runs if loop finishes normally (not on break).</p>
+<table><tr><th>Statement</th><th>Action</th></tr>
+<tr><td><code class="c">break</code></td><td>Stop loop immediately</td></tr>
+<tr><td><code class="c">continue</code></td><td>Skip current iteration</td></tr>
+<tr><td><code class="c">pass</code></td><td>Do nothing (placeholder)</td></tr>
+</table></div>
+
+<div class="practice" id="u1-practice"><h2>Practice Sheet — Unit 1</h2>
+<span class="tag tag-m">MCQs</span>
+<div class="qb"><p class="q"><span class="qn">1.</span> Who created Python?</p><p class="op">a) Dennis Ritchie &nbsp; b) James Gosling &nbsp; c) Guido van Rossum &nbsp; d) Bjarne Stroustrup</p><details class="ans"><summary>&#9654; Answer</summary><div class="ab"><strong>c) Guido van Rossum</strong> — first released in 1991.</div></details></div>
+<div class="qb"><p class="q"><span class="qn">2.</span> Which is mutable?</p><p class="op">a) tuple &nbsp; b) str &nbsp; c) int &nbsp; d) list</p><details class="ans"><summary>&#9654; Answer</summary><div class="ab"><strong>d) list</strong></div></details></div>
+<div class="qb"><p class="q"><span class="qn">3.</span> Output of <code class="c">10 // 3</code>?</p><p class="op">a) 3.33 &nbsp; b) 3 &nbsp; c) 4 &nbsp; d) 1</p><details class="ans"><summary>&#9654; Answer</summary><div class="ab"><strong>b) 3</strong> — floor division rounds down.</div></details></div>
+<div class="qb"><p class="q"><span class="qn">4.</span> Which implementation uses JIT?</p><p class="op">a) Jython &nbsp; b) IronPython &nbsp; c) PyPy &nbsp; d) CPython</p><details class="ans"><summary>&#9654; Answer</summary><div class="ab"><strong>c) PyPy</strong></div></details></div>
+<div class="qb"><p class="q"><span class="qn">5.</span> What does <code class="c">continue</code> do?</p><p class="op">a) Stops loop &nbsp; b) Skips iteration &nbsp; c) Does nothing &nbsp; d) Restarts loop</p><details class="ans"><summary>&#9654; Answer</summary><div class="ab"><strong>b) Skips current iteration</strong></div></details></div>
+<div class="qb"><p class="q"><span class="qn">6.</span> Which checks same memory object?</p><p class="op">a) == &nbsp; b) = &nbsp; c) in &nbsp; d) is</p><details class="ans"><summary>&#9654; Answer</summary><div class="ab"><strong>d) is</strong> — <code class="c">==</code> checks value; <code class="c">is</code> checks identity.</div></details></div>
+<span class="tag tag-f">Fill in the Blanks</span>
+<div class="qb"><p class="q"><span class="qn">7.</span> Bytecode stored in ______ files inside ______ folder.</p><details class="ans"><summary>&#9654; Answer</summary><div class="ab"><strong>.pyc</strong> ; <strong>__pycache__</strong></div></details></div>
+<div class="qb"><p class="q"><span class="qn">8.</span> ______ loop for known iterations; ______ for unknown.</p><details class="ans"><summary>&#9654; Answer</summary><div class="ab"><strong>for</strong> ; <strong>while</strong></div></details></div>
+<div class="qb"><p class="q"><span class="qn">9.</span> Default sep in print() is ______ and end is ______.</p><details class="ans"><summary>&#9654; Answer</summary><div class="ab"><strong>space ' '</strong> ; <strong>newline '\n'</strong></div></details></div>
+<div class="qb"><p class="q"><span class="qn">10.</span> ______ is mandatory in Python to define code blocks.</p><details class="ans"><summary>&#9654; Answer</summary><div class="ab"><strong>Indentation</strong></div></details></div>
+<span class="tag tag-s">Short Answer</span>
+<div class="qb"><p class="q"><span class="qn">11.</span> Differentiate == and is.</p><details class="ans"><summary>&#9654; Answer</summary><div class="ab"><code class="c">==</code> checks <strong>value</strong>. <code class="c">is</code> checks <strong>identity</strong> (same memory). <code class="c">a=[1,2]; b=[1,2]</code> &rarr; <code class="c">a==b</code> True, <code class="c">a is b</code> False.</div></details></div>
+<div class="qb"><p class="q"><span class="qn">12.</span> What is dynamic typing?</p><details class="ans"><summary>&#9654; Answer</summary><div class="ab">Type determined <strong>automatically at runtime</strong>. <code class="c">x=10</code> (int), then <code class="c">x="Hi"</code> (str). No declaration needed.</div></details></div>
+<span class="tag tag-l">Long Answer</span>
+<div class="qb"><p class="q"><span class="qn">13.</span> Explain the 3-step Python execution process.</p><details class="ans"><summary>&#9654; Answer</summary><div class="ab"><strong>1.</strong> Source Code (.py) &rarr; <strong>2.</strong> Compiler creates Bytecode (.pyc in __pycache__) &rarr; <strong>3.</strong> PVM executes bytecode line by line. This makes Python platform independent.</div></details></div>
+<div class="qb"><p class="q"><span class="qn">14.</span> Explain all 7 operator types with examples.</p><details class="ans"><summary>&#9654; Answer</summary><div class="ab"><strong>1. Arithmetic:</strong> +,-,*,/,%,**,// &nbsp; <strong>2. Relational:</strong> ==,!=,>,<,>=,<= &nbsp; <strong>3. Logical:</strong> and,or,not &nbsp; <strong>4. Assignment:</strong> =,+=,-= &nbsp; <strong>5. Bitwise:</strong> &,|,^,~,<<,>> &nbsp; <strong>6. Membership:</strong> in, not in &nbsp; <strong>7. Identity:</strong> is, is not</div></details></div>
+</div>
+</div>
+
+<button class="unit-btn" id="u2-btn" onclick="toggleUnit('u2')"><span class="arrow">&#9660;</span> UNIT 2 — Functions, Lists, Tuples, Dictionaries, Modules</button>
+<div class="unit-body" id="u2-body">
+
+<h2 class="sec" id="u2-lists">2.1 Lists</h2>
+<div class="card"><ul class="nl">
+<li>Ordered collection using <strong>[ ]</strong>. <strong>Mutable</strong>. Allows duplicates. Mixed types OK. Index from 0.</li>
+</ul>
+<table><tr><th>Method</th><th>Action</th></tr>
+<tr><td><code class="c">append(x)</code></td><td>Add at end</td></tr>
+<tr><td><code class="c">insert(i,x)</code></td><td>Add at index</td></tr>
+<tr><td><code class="c">extend(iter)</code></td><td>Add all from iterable</td></tr>
+<tr><td><code class="c">remove(x)</code></td><td>Remove first occurrence of value</td></tr>
+<tr><td><code class="c">pop(i)</code></td><td>Remove at index (default: last)</td></tr>
+<tr><td><code class="c">sort()/reverse()</code></td><td>Sort/Reverse in-place</td></tr>
+<tr><td><code class="c">copy()</code></td><td>Shallow copy (list2=list1 is just reference!)</td></tr>
+<tr><td><code class="c">clear()</code></td><td>Remove all</td></tr>
+</table>
+<p><strong>Functions:</strong> <code class="c">len(), max(), min(), sum(), sorted()</code>. <strong>Comprehension:</strong> <code class="c">[x for x in fruits if "a" in x]</code></p></div>
+
+<h2 class="sec" id="u2-tuples">2.2 Tuples &amp; List vs Tuple</h2>
+<div class="card"><ul class="nl">
+<li>Ordered using <strong>( )</strong>. <strong>Immutable</strong>. Faster. One-item: <code class="c">t=("apple",)</code> — comma mandatory!</li>
+<li>Only 2 methods: <code class="c">count()</code>, <code class="c">index()</code>. Workaround: convert to list &rarr; modify &rarr; convert back.</li>
+</ul>
+<table><tr><th>Feature</th><th>List</th><th>Tuple</th></tr>
+<tr><td>Symbol</td><td>[ ]</td><td>( )</td></tr>
+<tr><td>Mutable?</td><td>Yes</td><td>No</td></tr>
+<tr><td>Speed</td><td>Slower</td><td>Faster</td></tr>
+<tr><td>Methods</td><td>Many</td><td>Only 2</td></tr>
+<tr><td>Use</td><td>Dynamic data</td><td>Fixed data</td></tr>
+</table></div>
+
+<h2 class="sec" id="u2-dicts">2.3 Dictionaries</h2>
+<div class="card"><p><strong>key:value pairs</strong> using <strong>{ }</strong>. Ordered (3.7+), Mutable, No duplicate keys. Keys: unique &amp; immutable.</p>
+<p><strong>Methods:</strong> <code class="c">keys(), values(), items(), get(), pop(), popitem(), update(), clear(), setdefault()</code></p></div>
+<pre>car = {"brand":"Ford", "year":1964}
+car["color"] = "red"       # Add
+car.pop("brand")            # Remove
+for k,v in car.items(): print(k,v)
+# Nested: myfamily["child1"]["name"]</pre>
+
+<h2 class="sec" id="u2-func">2.4 Functions &amp; Types</h2>
+<div class="card"><p>Defined with <code class="c">def</code>. <strong>Parameter</strong>=in definition; <strong>Argument</strong>=when calling. No return &rarr; returns <code class="c">None</code>.</p>
+<table><tr><th>Type</th><th>Args?</th><th>Return?</th></tr>
+<tr><td>Type 1</td><td>No</td><td>No</td></tr>
+<tr><td>Type 2</td><td>Yes</td><td>No</td></tr>
+<tr><td>Type 3</td><td>No</td><td>Yes</td></tr>
+<tr><td>Type 4</td><td>Yes</td><td>Yes (most common)</td></tr>
+</table></div>
+
+<h2 class="sec" id="u2-args">2.5 Function Arguments</h2>
+<div class="card"><table><tr><th>Type</th><th>Description</th></tr>
+<tr><td><strong>Positional</strong></td><td>Order matters; must match count</td></tr>
+<tr><td><strong>Keyword</strong></td><td>key=value; order free</td></tr>
+<tr><td><strong>Default</strong></td><td>Default if no arg: <code class="c">def f(x=5)</code></td></tr>
+<tr><td><strong>*args</strong></td><td>Variable positional &rarr; <strong>tuple</strong></td></tr>
+<tr><td><strong>**kwargs</strong></td><td>Variable keyword &rarr; <strong>dict</strong></td></tr>
+</table>
+<p><strong>Order:</strong> regular &rarr; *args &rarr; **kwargs</p></div>
+
+<h2 class="sec" id="u2-lambda">2.6 Lambda Functions</h2>
+<div class="card"><p><code class="c">lambda args : expression</code> — anonymous, single expression, auto-returns.</p>
+<table><tr><th>With</th><th>Use</th><th>Example</th></tr>
+<tr><td><code class="c">map()</code></td><td>Transform ALL</td><td><code class="c">list(map(lambda x: x*2, nums))</code></td></tr>
+<tr><td><code class="c">filter()</code></td><td>Select matching</td><td><code class="c">list(filter(lambda x: x%2==0, nums))</code></td></tr>
+<tr><td><code class="c">reduce()</code></td><td>Combine to one</td><td><code class="c">reduce(lambda a,b: a*b, nums)</code></td></tr>
+</table></div>
+
+<h2 class="sec" id="u2-modules">2.7 Modules &amp; Packages</h2>
+<div class="card"><p><strong>Module</strong>=.py file with reusable code. <strong>Package</strong>=folder with <code class="c">__init__.py</code> + modules.</p>
+<table><tr><th>Import Syntax</th><th>Usage</th></tr>
+<tr><td><code class="c">import math</code></td><td><code class="c">math.sqrt(16)</code></td></tr>
+<tr><td><code class="c">from math import sqrt</code></td><td><code class="c">sqrt(16)</code> directly</td></tr>
+<tr><td><code class="c">import math as m</code></td><td><code class="c">m.sqrt(16)</code></td></tr>
+<tr><td><code class="c">from math import *</code></td><td>All (discouraged)</td></tr>
+</table>
+<p><strong>Math:</strong> sqrt, pow, factorial, ceil, floor, pi. <strong>Random:</strong> random(), randint(a,b) [both inclusive], randrange(a,b) [stop excluded], choice(), shuffle(), seed(). <strong>distutils:</strong> packaging via setup.py.</p></div>
+
+<div class="practice" id="u2-practice"><h2>Practice Sheet — Unit 2</h2>
+<span class="tag tag-m">MCQs</span>
+<div class="qb"><p class="q"><span class="qn">1.</span> Which is immutable?</p><p class="op">a) List &nbsp; b) Dict &nbsp; c) Set &nbsp; d) Tuple</p><details class="ans"><summary>&#9654; Answer</summary><div class="ab"><strong>d) Tuple</strong></div></details></div>
+<div class="qb"><p class="q"><span class="qn">2.</span> Which adds at specific position?</p><p class="op">a) append() &nbsp; b) extend() &nbsp; c) insert() &nbsp; d) add()</p><details class="ans"><summary>&#9654; Answer</summary><div class="ab"><strong>c) insert(i, x)</strong></div></details></div>
+<div class="qb"><p class="q"><span class="qn">3.</span> *args receives as?</p><p class="op">a) List &nbsp; b) Dict &nbsp; c) Tuple &nbsp; d) Set</p><details class="ans"><summary>&#9654; Answer</summary><div class="ab"><strong>c) Tuple</strong>. **kwargs &rarr; dict.</div></details></div>
+<div class="qb"><p class="q"><span class="qn">4.</span> Which applies lambda to every element?</p><p class="op">a) filter() &nbsp; b) reduce() &nbsp; c) map() &nbsp; d) apply()</p><details class="ans"><summary>&#9654; Answer</summary><div class="ab"><strong>c) map()</strong></div></details></div>
+<div class="qb"><p class="q"><span class="qn">5.</span> Single-element tuple?</p><p class="op">a) t=(5) &nbsp; b) t=[5] &nbsp; c) t=(5,) &nbsp; d) t=tuple[5]</p><details class="ans"><summary>&#9654; Answer</summary><div class="ab"><strong>c) t=(5,)</strong> — trailing comma mandatory.</div></details></div>
+<div class="qb"><p class="q"><span class="qn">6.</span> Which file makes folder a package?</p><p class="op">a) main.py &nbsp; b) setup.py &nbsp; c) __init__.py &nbsp; d) package.py</p><details class="ans"><summary>&#9654; Answer</summary><div class="ab"><strong>c) __init__.py</strong></div></details></div>
+<span class="tag tag-f">Fill in the Blanks</span>
+<div class="qb"><p class="q"><span class="qn">7.</span> Lists use ______ brackets; Tuples use ______.</p><details class="ans"><summary>&#9654; Answer</summary><div class="ab"><strong>[ ]</strong> ; <strong>( )</strong></div></details></div>
+<div class="qb"><p class="q"><span class="qn">8.</span> Lambda has only ______ expression and ______ returns.</p><details class="ans"><summary>&#9654; Answer</summary><div class="ab"><strong>one</strong> ; <strong>automatically</strong></div></details></div>
+<div class="qb"><p class="q"><span class="qn">9.</span> randint(1,10) is ______ inclusive; randrange(1,10) ______ 10.</p><details class="ans"><summary>&#9654; Answer</summary><div class="ab"><strong>both</strong> ; <strong>excludes</strong></div></details></div>
+<span class="tag tag-s">Short Answer</span>
+<div class="qb"><p class="q"><span class="qn">10.</span> Differentiate append(), insert(), extend().</p><details class="ans"><summary>&#9654; Answer</summary><div class="ab"><strong>append(x)</strong>: end. <strong>insert(i,x)</strong>: at index. <strong>extend(iter)</strong>: all from iterable.</div></details></div>
+<div class="qb"><p class="q"><span class="qn">11.</span> Output? <code class="c">list(filter(lambda x: x%2==0, [1,2,3,4,5]))</code></p><details class="ans"><summary>&#9654; Answer</summary><div class="ab"><code class="c">[2, 4]</code></div></details></div>
+<span class="tag tag-l">Long Answer</span>
+<div class="qb"><p class="q"><span class="qn">12.</span> Explain all function argument types.</p><details class="ans"><summary>&#9654; Answer</summary><div class="ab"><strong>1. Positional</strong>: order matters. <strong>2. Keyword</strong>: key=value. <strong>3. Default</strong>: def f(x=5). <strong>4. *args</strong>: tuple. <strong>5. **kwargs</strong>: dict. Order: regular &rarr; *args &rarr; **kwargs.</div></details></div>
+<div class="qb"><p class="q"><span class="qn">13.</span> Explain lambda with map/filter/reduce.</p><details class="ans"><summary>&#9654; Answer</summary><div class="ab"><strong>map</strong>: transform all <code class="c">list(map(lambda x:x*2,[1,2,3]))</code>&rarr;[2,4,6]. <strong>filter</strong>: select <code class="c">list(filter(lambda x:x%2==0,[1,2,3,4]))</code>&rarr;[2,4]. <strong>reduce</strong>: combine <code class="c">reduce(lambda a,b:a*b,[1,2,3,4])</code>&rarr;24.</div></details></div>
+</div>
+</div>
+
+<button class="unit-btn" id="u3-btn" onclick="toggleUnit('u3')"><span class="arrow">&#9660;</span> UNIT 3 — OOPs, Exceptions, Modules, Strings &amp; File I/O</button>
+<div class="unit-body" id="u3-body">
+
+<h2 class="sec" id="u3-oop">3.1 Classes &amp; Objects</h2>
+<div class="card"><ul class="nl">
+<li><strong>Class</strong> = Blueprint. <strong>Object</strong> = Instance (has State, Behavior, Identity).</li>
+<li><code class="c">__init__()</code> = constructor, runs automatically on object creation.</li>
+<li><code class="c">self</code> = reference to current instance. Must be first param in all methods.</li>
+<li>OOP advantages: code reusability, DRY, easier debugging, clear structure.</li>
+</ul></div>
+<pre>class Person:
+    def __init__(self, name, age=18):  # Constructor + default value
+        self.name = name
+        self.age = age
+    def greet(self):
+        print(f"Hello, I am {self.name}")
+
+p1 = Person("Emil", 25)
+p1.greet()         # Hello, I am Emil</pre>
+
+<h2 class="sec" id="u3-inherit">3.2 Inheritance &amp; Polymorphism</h2>
+<div class="card"><table><tr><th>Inheritance Type</th><th>Description</th></tr>
+<tr><td><strong>Single</strong></td><td>Child &larr; one Parent</td></tr>
+<tr><td><strong>Multiple</strong></td><td>Child &larr; Parent1 + Parent2</td></tr>
+<tr><td><strong>Multilevel</strong></td><td>Grandparent &rarr; Parent &rarr; Child</td></tr>
+<tr><td><strong>Hierarchical</strong></td><td>Multiple children &larr; one Parent</td></tr>
+<tr><td><strong>Hybrid</strong></td><td>Combination of above</td></tr>
+</table>
+<p><code class="c">super()</code> calls parent methods without naming the parent class.</p></div>
+<pre>class Person:
+    def __init__(self, fname):
+        self.firstname = fname
+
+class Student(Person):
+    def __init__(self, fname, grade):
+        super().__init__(fname)   # Call parent constructor
+        self.grade = grade</pre>
+
+<h3 class="sub">Polymorphism</h3>
+<div class="card"><p>"Many forms" — same method/operator behaves differently.</p>
+<p><strong>Operator Overloading:</strong> <code class="c">5+3=8</code>, <code class="c">"Hi"+"!"="Hi!"</code>, <code class="c">[1]+[2]=[1,2]</code></p>
+<p><strong>Method Overriding (Runtime):</strong> Child redefines parent's method.</p></div>
+<pre>class Animal:
+    def speak(self): print("Animal speaks")
+class Dog(Animal):
+    def speak(self): print("Dog barks")  # Overrides parent
+
+Dog().speak()  # Dog barks</pre>
+
+<h2 class="sec" id="u3-hiding">3.3 Data Hiding &amp; Metaclasses</h2>
+<div class="card"><table><tr><th>Access</th><th>Prefix</th><th>Where Accessible</th></tr>
+<tr><td><strong>Public</strong></td><td>None</td><td>Anywhere</td></tr>
+<tr><td><strong>Protected</strong></td><td><code class="c">_single</code></td><td>Class + child classes (convention)</td></tr>
+<tr><td><strong>Private</strong></td><td><code class="c">__double</code></td><td>Only within class</td></tr>
+</table>
+<p><strong>Name Mangling:</strong> <code class="c">__var</code> becomes <code class="c">_ClassName__var</code> internally.</p>
+<p><strong>Metaclass:</strong> Creates other classes. Chain: Metaclass &rarr; Class &rarr; Object. Default = <code class="c">type</code>.</p></div>
+<pre>class Student:
+    def __init__(self):
+        self.__marks = 90      # Private
+    def display(self):
+        print(self.__marks)    # Access via method
+
+s = Student()
+# s.__marks                   # ERROR!
+s.display()                    # 90
+print(s._Student__marks)       # 90 (name mangling, not recommended)</pre>
+
+<h2 class="sec" id="u3-except">3.4 Exception Handling</h2>
+<div class="card"><table><tr><th>Keyword</th><th>Purpose</th></tr>
+<tr><td><code class="c">try</code></td><td>Code that may cause error</td></tr>
+<tr><td><code class="c">except</code></td><td>Handle the error</td></tr>
+<tr><td><code class="c">finally</code></td><td><strong>Always runs</strong> (cleanup)</td></tr>
+<tr><td><code class="c">raise</code></td><td>Manually trigger exception</td></tr>
+</table>
+<p><strong>Exception Propagation:</strong> Unhandled exception passes up to calling function.</p>
+<p><strong>Custom Exception:</strong> Must inherit from <code class="c">Exception</code>.</p></div>
+<pre># try-except-finally
+try:
+    num = 10 / 0
+except ZeroDivisionError:
+    print("Cannot divide by zero")
+finally:
+    print("Always runs")
+
+# Multiple except
+try:
+    num = int(input("Enter: "))
+    result = 10 / num
+except ValueError:
+    print("Invalid input")
+except ZeroDivisionError:
+    print("Division by zero!")
+
+# Generic except
+except Exception as e:
+    print("Error:", e)
+
+# User Defined Exception
+class AgeError(Exception):
+    pass
+
+try:
+    if age &lt; 18:
+        raise AgeError("Must be 18+")
+except AgeError as e:
+    print(e)</pre>
+<div class="tip"><strong>Exam Tip:</strong> Exception vs Error: Exceptions can be handled; Errors (like SyntaxError) usually cannot.</div>
+
+<h2 class="sec" id="u3-modules">3.5 sys, copy &amp; bisect Modules</h2>
+<div class="card"><h3 class="sub">sys Module</h3>
+<p><code class="c">sys.exit()</code> terminate, <code class="c">sys.path</code> module search paths, <code class="c">sys.platform</code> OS name, <code class="c">sys.argv</code> command-line args list.</p>
+<h3 class="sub">copy Module</h3>
+<table><tr><th>Aspect</th><th>Shallow <code class="c">copy.copy()</code></th><th>Deep <code class="c">copy.deepcopy()</code></th></tr>
+<tr><td>Outer object</td><td>New</td><td>New</td></tr>
+<tr><td>Inner objects</td><td><strong>Shared</strong></td><td><strong>Fully copied</strong></td></tr>
+<tr><td>Changes affect original?</td><td>Yes (nested)</td><td>No</td></tr>
+</table>
+<h3 class="sub">bisect Module</h3>
+<p>Binary search on <strong>sorted lists</strong>. <code class="c">bisect()</code> find position, <code class="c">bisect_left()</code> insert before, <code class="c">insort()</code> insert keeping sorted.</p></div>
+<pre>import copy
+a = [[1,2],[3,4]]
+b = copy.copy(a)       # Shallow: inner lists shared
+c = copy.deepcopy(a)   # Deep: fully independent
+
+import bisect
+lst = [1,3,5,7]
+bisect.insort(lst, 4)  # [1,3,4,5,7]</pre>
+
+<h2 class="sec" id="u3-regex">3.6 Regular Expressions</h2>
+<div class="card"><p><code class="c">import re</code> — pattern matching for text.</p>
+<table><tr><th>Function</th><th>Use</th></tr>
+<tr><td><code class="c">re.match()</code></td><td>Match at beginning only</td></tr>
+<tr><td><code class="c">re.search()</code></td><td>First match anywhere</td></tr>
+<tr><td><code class="c">re.findall()</code></td><td>All matches as list</td></tr>
+<tr><td><code class="c">re.sub()</code></td><td>Replace matches</td></tr>
+<tr><td><code class="c">re.split()</code></td><td>Split by pattern</td></tr>
+</table>
+<p><strong>Patterns:</strong> <code class="c">\d</code>=digit, <code class="c">\w</code>=word char, <code class="c">\s</code>=space, <code class="c">+</code>=1+, <code class="c">*</code>=0+, <code class="c">^</code>=start, <code class="c">$</code>=end, <code class="c">[]</code>=char set.</p></div>
+<pre>import re
+re.findall(r"\d+", "Phone: 9876543210")  # ['9876543210']
+re.findall(r"[cbr]at", "cat bat rat")     # ['cat','bat','rat']
+re.sub(r"\d+", "#", "abc123")             # 'abc#'</pre>
+
+<h2 class="sec" id="u3-fileio">3.7 File I/O Operations</h2>
+<div class="card"><table><tr><th>Mode</th><th>Meaning</th></tr>
+<tr><td><code class="c">r</code></td><td>Read (default). Error if not exists.</td></tr>
+<tr><td><code class="c">w</code></td><td>Write. <strong>Overwrites</strong>. Creates if not exists.</td></tr>
+<tr><td><code class="c">a</code></td><td>Append. Adds at end. Creates if not exists.</td></tr>
+<tr><td><code class="c">x</code></td><td>Create new. Error if exists.</td></tr>
+<tr><td><code class="c">r+/w+/a+</code></td><td>Read+Write combos. w+ truncates; a+ no truncate.</td></tr>
+<tr><td><code class="c">b</code></td><td>Binary mode (e.g. "rb", "wb")</td></tr>
+</table>
+<p><strong>Reading:</strong> <code class="c">f.read()</code>=all, <code class="c">f.read(n)</code>=n chars, <code class="c">f.readline()</code>=one line, <code class="c">f.readlines()</code>=all as list.</p></div>
+<pre># Read
+with open("data.txt", "r") as f:  # auto-closes!
+    data = f.read()
+
+# Write (overwrites)
+with open("demo.txt", "w") as f:
+    f.write("New content")
+
+# Append
+with open("demo.txt", "a") as f:
+    f.write("\nAppended")
+
+# Keyboard input
+name = input("Enter name: ")</pre>
+<div class="tip"><strong>Exam Tip:</strong> After read(), cursor is at end — readline() returns empty. Use <code class="c">with</code> to auto-close. <code class="c">w</code> creates file if not exists but <code class="c">r</code> gives error.</div>
+
+<h2 class="sec" id="u3-os">3.8 OS &amp; Auxiliary Modules</h2>
+<div class="card"><table><tr><th>Function</th><th>Use</th></tr>
+<tr><td><code class="c">os.getcwd()</code></td><td>Current directory</td></tr>
+<tr><td><code class="c">os.listdir()</code></td><td>List files</td></tr>
+<tr><td><code class="c">os.mkdir()/makedirs()</code></td><td>Create directory/nested</td></tr>
+<tr><td><code class="c">os.remove()/rmdir()</code></td><td>Delete file/empty dir</td></tr>
+<tr><td><code class="c">os.rename(old,new)</code></td><td>Rename</td></tr>
+<tr><td><code class="c">os.path.exists()</code></td><td>Check if exists</td></tr>
+<tr><td><code class="c">os.path.join(a,b)</code></td><td>Join paths safely</td></tr>
+</table>
+<p><strong>shutil:</strong> <code class="c">shutil.copy()</code>, <code class="c">shutil.move()</code>, <code class="c">shutil.rmtree()</code> (delete non-empty folder).</p>
+<p><strong>Compressed:</strong> <code class="c">zipfile</code>, <code class="c">gzip</code>, <code class="c">tarfile</code>.</p>
+<p><strong>Copy file methods:</strong> 1) read()+write() 2) line-by-line (large files) 3) shutil.copy() (shortest)</p></div>
+
+<h2 class="sec" id="u3-collections">3.9 UserList, UserDict &amp; UserString</h2>
+<div class="card"><p>From <code class="c">collections</code> module — wrappers for custom list/dict/string classes. Data in <code class="c">self.data</code>.</p>
+<table><tr><th></th><th>UserList</th><th>UserDict</th><th>UserString</th></tr>
+<tr><td>Based on</td><td>list</td><td>dict</td><td>string</td></tr>
+<tr><td>Mutable?</td><td>Yes</td><td>Yes</td><td>No</td></tr>
+</table></div>
+<pre>from collections import UserList
+class EvenList(UserList):
+    def append(self, item):
+        if item % 2 == 0: super().append(item)
+        else: print("Only even!")
+
+l = EvenList(); l.append(2); l.append(5)
+print(l)  # [2]</pre>
+
+<hr class="divider">
+
+<div class="practice" id="u3-practice"><h2>Practice Sheet — Unit 3</h2>
+<span class="tag tag-m">MCQs</span>
+<div class="qb"><p class="q"><span class="qn">1.</span> Method called automatically on object creation?</p><p class="op">a) __str__() &nbsp; b) __init__() &nbsp; c) __new__() &nbsp; d) __create__()</p><details class="ans"><summary>&#9654; Answer</summary><div class="ab"><strong>b) __init__()</strong> — the constructor.</div></details></div>
+<div class="qb"><p class="q"><span class="qn">2.</span> What prefix makes a variable private?</p><p class="op">a) _ &nbsp; b) __ &nbsp; c) # &nbsp; d) @</p><details class="ans"><summary>&#9654; Answer</summary><div class="ab"><strong>b) __ (double underscore)</strong>. Single _ = protected.</div></details></div>
+<div class="qb"><p class="q"><span class="qn">3.</span> Which block ALWAYS executes?</p><p class="op">a) try &nbsp; b) except &nbsp; c) finally &nbsp; d) raise</p><details class="ans"><summary>&#9654; Answer</summary><div class="ab"><strong>c) finally</strong></div></details></div>
+<div class="qb"><p class="q"><span class="qn">4.</span> What does copy.deepcopy() do?</p><p class="op">a) Reference &nbsp; b) Shallow &nbsp; c) Fully independent copy &nbsp; d) Deletes original</p><details class="ans"><summary>&#9654; Answer</summary><div class="ab"><strong>c) Fully independent copy</strong></div></details></div>
+<div class="qb"><p class="q"><span class="qn">5.</span> Which file mode overwrites content?</p><p class="op">a) r &nbsp; b) a &nbsp; c) w &nbsp; d) x</p><details class="ans"><summary>&#9654; Answer</summary><div class="ab"><strong>c) w</strong> — truncates then writes. <code class="c">a</code>=append.</div></details></div>
+<div class="qb"><p class="q"><span class="qn">6.</span> Which regex returns ALL matches?</p><p class="op">a) re.match() &nbsp; b) re.search() &nbsp; c) re.findall() &nbsp; d) re.sub()</p><details class="ans"><summary>&#9654; Answer</summary><div class="ab"><strong>c) re.findall()</strong></div></details></div>
+<div class="qb"><p class="q"><span class="qn">7.</span> bisect module works on?</p><p class="op">a) Any list &nbsp; b) Sorted lists only &nbsp; c) Tuples &nbsp; d) Dicts</p><details class="ans"><summary>&#9654; Answer</summary><div class="ab"><strong>b) Sorted lists only</strong></div></details></div>
+<div class="qb"><p class="q"><span class="qn">8.</span> Child redefining parent's method is called?</p><p class="op">a) Overloading &nbsp; b) Overriding &nbsp; c) Encapsulation &nbsp; d) Abstraction</p><details class="ans"><summary>&#9654; Answer</summary><div class="ab"><strong>b) Method Overriding</strong> (runtime polymorphism)</div></details></div>
+<div class="qb"><p class="q"><span class="qn">9.</span> UserList/UserDict/UserString store data in?</p><p class="op">a) self.list &nbsp; b) self.items &nbsp; c) self.data &nbsp; d) self.values</p><details class="ans"><summary>&#9654; Answer</summary><div class="ab"><strong>c) self.data</strong></div></details></div>
+<div class="qb"><p class="q"><span class="qn">10.</span> Which inherits from multiple parents?</p><p class="op">a) Single &nbsp; b) Multiple &nbsp; c) Multilevel &nbsp; d) Hierarchical</p><details class="ans"><summary>&#9654; Answer</summary><div class="ab"><strong>b) Multiple Inheritance</strong> — <code class="c">class Child(P1, P2)</code></div></details></div>
+
+<span class="tag tag-f">Fill in the Blanks</span>
+<div class="qb"><p class="q"><span class="qn">11.</span> <code class="c">self</code> is a reference to the ______ of the class.</p><details class="ans"><summary>&#9654; Answer</summary><div class="ab"><strong>current instance/object</strong></div></details></div>
+<div class="qb"><p class="q"><span class="qn">12.</span> Python renames <code class="c">__marks</code> to <code class="c">______</code> via ______.</p><details class="ans"><summary>&#9654; Answer</summary><div class="ab"><strong>_ClassName__marks</strong> ; <strong>Name Mangling</strong></div></details></div>
+<div class="qb"><p class="q"><span class="qn">13.</span> Custom exceptions must inherit from ______.</p><details class="ans"><summary>&#9654; Answer</summary><div class="ab"><strong>Exception</strong></div></details></div>
+<div class="qb"><p class="q"><span class="qn">14.</span> The ______ statement manually triggers an exception.</p><details class="ans"><summary>&#9654; Answer</summary><div class="ab"><strong>raise</strong></div></details></div>
+<div class="qb"><p class="q"><span class="qn">15.</span> In shallow copy, outer is ______ but inner objects are ______.</p><details class="ans"><summary>&#9654; Answer</summary><div class="ab"><strong>new</strong> ; <strong>shared/same reference</strong></div></details></div>
+<div class="qb"><p class="q"><span class="qn">16.</span> <code class="c">with</code> statement automatically ______ the file.</p><details class="ans"><summary>&#9654; Answer</summary><div class="ab"><strong>closes</strong></div></details></div>
+<div class="qb"><p class="q"><span class="qn">17.</span> <code class="c">f.read()</code> returns ______; <code class="c">f.readlines()</code> returns ______.</p><details class="ans"><summary>&#9654; Answer</summary><div class="ab"><strong>string</strong> ; <strong>list</strong> (of lines)</div></details></div>
+<div class="qb"><p class="q"><span class="qn">18.</span> Metaclass creates ______; Class creates ______.</p><details class="ans"><summary>&#9654; Answer</summary><div class="ab"><strong>classes</strong> ; <strong>objects</strong></div></details></div>
+
+<span class="tag tag-s">Short Answer</span>
+<div class="qb"><p class="q"><span class="qn">19.</span> Output? <code class="c">Dog().speak()</code> when Dog overrides Animal's speak.</p><details class="ans"><summary>&#9654; Answer</summary><div class="ab"><code class="c">Dog barks</code> — Method overriding: child's version called (runtime polymorphism).</div></details></div>
+<div class="qb"><p class="q"><span class="qn">20.</span> Differentiate shallow vs deep copy.</p><details class="ans"><summary>&#9654; Answer</summary><div class="ab"><strong>Shallow:</strong> New outer, shared inner. Changes to nested affect original.<br><strong>Deep:</strong> Fully independent. Changes don't affect original.</div></details></div>
+<div class="qb"><p class="q"><span class="qn">21.</span> Differentiate Public, Protected, Private.</p><details class="ans"><summary>&#9654; Answer</summary><div class="ab"><strong>Public</strong> (no prefix): anywhere. <strong>Protected</strong> (_): class+children (convention). <strong>Private</strong> (__): only within class (name mangling).</div></details></div>
+<div class="qb"><p class="q"><span class="qn">22.</span> Differentiate file modes r, w, a, x.</p><details class="ans"><summary>&#9654; Answer</summary><div class="ab"><strong>r</strong>: read, error if not exists. <strong>w</strong>: write, truncates, creates. <strong>a</strong>: append, no truncate, creates. <strong>x</strong>: create new, error if exists.</div></details></div>
+<div class="qb"><p class="q"><span class="qn">23.</span> What is exception propagation?</p><details class="ans"><summary>&#9654; Answer</summary><div class="ab">Unhandled exception in a function passes up to calling function. If still unhandled, goes to interpreter &rarr; program terminates.</div></details></div>
+
+<span class="tag tag-l">Long Answer</span>
+<div class="qb"><p class="q"><span class="qn">24.</span> Explain all 5 inheritance types with syntax.</p><details class="ans"><summary>&#9654; Answer</summary><div class="ab"><strong>1. Single:</strong> <code class="c">class C(P)</code><br><strong>2. Multiple:</strong> <code class="c">class C(P1,P2)</code><br><strong>3. Multilevel:</strong> GP&rarr;P&rarr;C chain<br><strong>4. Hierarchical:</strong> Multiple children from one parent<br><strong>5. Hybrid:</strong> Combination of above</div></details></div>
+<div class="qb"><p class="q"><span class="qn">25.</span> Explain exception handling: try/except/finally/raise + custom exception example.</p><details class="ans"><summary>&#9654; Answer</summary><div class="ab"><strong>try:</strong> risky code. <strong>except:</strong> handle error. <strong>finally:</strong> always runs (cleanup). <strong>raise:</strong> trigger manually.<br>
+<pre>class InvalidMarks(Exception): pass
+try:
+    marks = int(input("Marks: "))
+    if marks>100: raise InvalidMarks("Max 100!")
+except InvalidMarks as e: print(e)
+finally: print("Done")</pre></div></details></div>
+<div class="qb"><p class="q"><span class="qn">26.</span> Explain File I/O: modes, reading methods, with statement, 3 copy methods.</p><details class="ans"><summary>&#9654; Answer</summary><div class="ab"><strong>Modes:</strong> r, w, a, x, r+, w+, a+, b.<br><strong>Reading:</strong> read()=all string, read(n)=n chars, readline()=one line, readlines()=list.<br><strong>with:</strong> auto-closes file.<br><strong>Copy:</strong> 1) read()+write() 2) line-by-line 3) shutil.copy()</div></details></div>
+</div>
+
+</div>
+
+<!-- PLACEHOLDERS -->
+<button class="unit-btn collapsed" id="u4-btn" onclick="toggleUnit('u4')"><span class="arrow">&#9660;</span> UNIT 4 — CGI, Database, Threads</button>
+<div class="unit-body collapsed" id="u4-body"><div class="card" id="u4" style="opacity:.6"><p>Topics: CGI, Database, Time Ops, Garbage Collection, Threads. <em>Share Unit 4 PDF to add notes.</em></p></div></div>
+
+<button class="unit-btn collapsed" id="u5-btn" onclick="toggleUnit('u5')"><span class="arrow">&#9660;</span> UNIT 5 — Networking &amp; Web Programming</button>
+<div class="unit-body collapsed" id="u5-body"><div class="card" id="u5" style="opacity:.6"><p>Topics: URL Access, Email, HTTP/FTP, Socket, MIME. <em>Share Unit 5 PDF to add notes.</em></p></div></div>
+
+</div></body></html>
